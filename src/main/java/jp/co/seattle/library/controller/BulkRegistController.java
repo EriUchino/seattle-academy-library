@@ -31,6 +31,11 @@ public class BulkRegistController {
 	@Autowired
 	private ThumbnailService thumbnailService;
 
+	/**
+	 * 
+	 * @param model モデル
+	 * @return 遷移先画面
+	 **/
 	@RequestMapping(value = "/bulkRegist", method = RequestMethod.GET) // value＝actionで指定したパラメータ
 	public String bulkRegist(Model model) {
 		return "bulkRegist";
@@ -53,30 +58,34 @@ public class BulkRegistController {
 			int lineCount = 0;
 			List<String> errorMessages = new ArrayList<String>();
 			List<BookDetailsInfo> bookLists = new ArrayList<BookDetailsInfo>();
-			if (uploadFile.isEmpty()) {
-				errorMessages.add("CSVファイルが読み取れません");
+
+			if (!br.ready()) {
+				model.addAttribute("errorMessages", "CSVに書籍情報がありません");
+				return "bulkRegist";
 			}
+
 			while ((inputValue = br.readLine()) != null) {
 				final String[] inputValues = inputValue.split(",", -1);
-
-				BookDetailsInfo bookInfo = new BookDetailsInfo();
-				bookInfo.setTitle(inputValues[0]);
-				bookInfo.setAuthor(inputValues[1]);
-				bookInfo.setPublisher(inputValues[2]);
-				bookInfo.setPublishDate(inputValues[3]);
-				bookInfo.setIsbn(inputValues[4]);
 
 				// 行数カウントインクリメント
 				lineCount++;
 
 				// 一括登録バリデーション
 
-				if ((inputValues[0].isEmpty() || inputValues[1].isEmpty() || inputValues[2].isEmpty() || inputValues[3].isEmpty())
+				if ((inputValues[0].isEmpty() || inputValues[1].isEmpty() || inputValues[2].isEmpty()
+						|| inputValues[3].isEmpty())
 						|| (inputValues[3].length() != 8 || !(inputValues[3].matches("^[0-9]*$")))
 						|| (inputValues[4].length() != 10 && inputValues[4].length() != 13
-						&& inputValues[4].length() != 0 || !(inputValues[4].matches("^[0-9]*$")))) {
-					errorMessages.add(lineCount + "行目でバリデーションエラーが発生しました");
+								&& inputValues[4].length() != 0 || !(inputValues[4].matches("^[0-9]*$")))) {
+					errorMessages.add(lineCount + "行目の書籍登録でエラーが起きました。");
 				} else {
+					BookDetailsInfo bookInfo = new BookDetailsInfo();
+					bookInfo.setTitle(inputValues[0]);
+					bookInfo.setAuthor(inputValues[1]);
+					bookInfo.setPublisher(inputValues[2]);
+					bookInfo.setPublishDate(inputValues[3]);
+					bookInfo.setIsbn(inputValues[4]);
+
 					bookLists.add(bookInfo);
 				}
 			}

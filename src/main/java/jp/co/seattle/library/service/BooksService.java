@@ -62,11 +62,10 @@ public class BooksService {
 	 */
 	public void registBook(BookDetailsInfo bookInfo) {
 
-		String sql = "INSERT INTO books (title, author, publisher, publish_date, isbn, description, reg_date, upd_date) VALUES ('"
+		String sql = "INSERT INTO books (title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, reg_date, upd_date) VALUES ('"
 				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-				+ bookInfo.getPublishDate() + "','" + bookInfo.getIsbn() + "','" + bookInfo.getDescription() + "'," 
-				+ "now(),"
-				+ "now())";
+				+ bookInfo.getPublishDate() + "','" + bookInfo.getIsbn() + "','" + bookInfo.getDescription() + "',"
+				+ "now()," + "now())";
 
 		jdbcTemplate.update(sql);
 
@@ -135,20 +134,26 @@ public class BooksService {
 		return bookId;
 	}
 
+	/**
+	 * 書籍を一括登録する
+	 *
+	 * @param bookInfo    書籍情報
+	 * @param title       書籍名
+	 * @param author      著者名
+	 * @param publisher   出版社
+	 * @param publishDate 出版日
+	 * @param isbn        コード
+	 * @param description 説明文
+	 * @return 遷移先画面
+	 */
 	public void bulkRegist(BookDetailsInfo bookInfo) {
 		String sql = "INSERT INTO books (title, author, publisher, publish_date, isbn, description, reg_date, upd_date) VALUES ('"
 				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-				+ bookInfo.getPublishDate() + "','"  + bookInfo.getIsbn() + "','" + bookInfo.getDescription() + "'," + "now(),"
-						+ "now())";
-		
-		System.out.println(sql);
-		
+				+ bookInfo.getPublishDate() + "','" + bookInfo.getIsbn() + "','" + bookInfo.getDescription() + "',"
+				+ "now()," + "now())";
+
 		jdbcTemplate.update(sql);
 
 	}
 
-	public Boolean checkBulkValidation(BookDetailsInfo bookInfo) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
 }
