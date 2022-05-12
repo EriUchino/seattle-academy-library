@@ -156,13 +156,22 @@ public class BooksService {
 
 	}
 
-	// 書籍の貸出
+	/**
+	 * 
+	 * 
+	 * @param bookId 
+	 */
 	public void rentBook(int bookId) {
 		String sql = "insert into rentbooks (book_id) select " + bookId
 				+ " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 	}
-
+	/**
+	 * 
+	 * 
+	 * @param
+	 * @return bookId
+	 */
 	public int count() {
 		String sql = "select count (*) from rentbooks";
 
