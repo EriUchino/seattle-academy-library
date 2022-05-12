@@ -42,8 +42,8 @@ public class DeleteBookController {
 		int count = booksService.size(bookId);
 
 		if (count == 1) {
-			model.addAttribute("ErrorMessage", "貸出中のため削除出来ません。");
 			model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+			model.addAttribute("ErrorMessage", "貸出中のため削除出来ません。");
 			return "details";
 
 		} else {
