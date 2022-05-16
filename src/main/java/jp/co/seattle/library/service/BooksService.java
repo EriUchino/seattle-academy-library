@@ -156,11 +156,12 @@ public class BooksService {
 
 	}
 
-	// 書籍の貸出
+	
 	/**
+	 * 書籍の貸し出し
 	 * 
 	 * 
-	 * @param bookId
+	 * @param bookId　書籍ID 
 	 */
 
 	public void rentBook(int bookId) {
@@ -173,7 +174,7 @@ public class BooksService {
 	 * 
 	 * 
 	 * @param
-	 * @return bookId
+	 * @return bookId　書籍ID
 	 */
 	public int count() {
 		String sql = "select count (*) from rentbooks";
@@ -182,11 +183,12 @@ public class BooksService {
 
 	}
 
-	// 書籍の返却
+	
 	/**
+	 * 書籍を返却する
 	 * 
 	 * 
-	 * @param bookId
+	 * @param bookId　書籍ID 
 	 */
 	public void returnBook(int bookId) {
 		String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
@@ -197,7 +199,7 @@ public class BooksService {
 	/**
 	 * 
 	 * 
-	 * @param bookId
+	 * @param bookId　書籍ID
 	 * @return 書籍情報
 	 */
 	public int size(int bookId) {
