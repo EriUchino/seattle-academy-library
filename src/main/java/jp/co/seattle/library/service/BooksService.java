@@ -156,27 +156,55 @@ public class BooksService {
 
 	}
 
+	
 	/**
+	 * 書籍の貸し出し
 	 * 
 	 * 
-	 * @param bookId 
+	 * @param bookId　書籍ID 
 	 */
+
 	public void rentBook(int bookId) {
 		String sql = "insert into rentbooks (book_id) select " + bookId
 				+ " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 	}
+
 	/**
 	 * 
 	 * 
 	 * @param
-	 * @return bookId
+	 * @return bookId　書籍ID
 	 */
 	public int count() {
 		String sql = "select count (*) from rentbooks";
 
 		return jdbcTemplate.queryForObject(sql, int.class);
 
+	}
+
+	
+	/**
+	 * 書籍を返却する
+	 * 
+	 * 
+	 * @param bookId　書籍ID 
+	 */
+	public void returnBook(int bookId) {
+		String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
+		jdbcTemplate.update(sql);
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param bookId　書籍ID
+	 * @return 書籍情報
+	 */
+	public int size(int bookId) {
+		String sql = "select count (*) from rentbooks WHERE book_id=" + bookId;
+		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 
 }
