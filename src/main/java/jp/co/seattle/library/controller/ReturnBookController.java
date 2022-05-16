@@ -32,13 +32,13 @@ public class ReturnBookController {
 	@RequestMapping(value = "/returnBook", method = RequestMethod.POST) // value＝actionで指定したパラメータ
 	public String returnBook(Locale locale, @RequestParam("bookId") Integer bookId, Model model) {
 
-		int count2 = booksService.size(bookId);
+		int size = booksService.size(bookId);
 
-		if (count2 == 1) {
+		if (size == 1) {
 			booksService.returnBook(bookId);
 
 		
-		} else if(count2 == 0) {
+		} else if(size == 0) {
 			model.addAttribute("ErrorMessage", "貸出しされていません。");
 
 		}
