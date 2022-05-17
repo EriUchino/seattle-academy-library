@@ -48,14 +48,13 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 		System.out.println(bookId);
 		// JSPに渡すデータを設定する
-		String sql = "SELECT * FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = " + bookId;
+		String sql = "SELECT * FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
+				+ bookId;
 		System.out.println(sql);
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-System.out.println(bookDetailsInfo);
+		System.out.println(bookDetailsInfo);
 		return bookDetailsInfo;
 	}
-	
-	
 
 	/**
 	 * 書籍を登録する
@@ -148,34 +147,48 @@ System.out.println(bookDetailsInfo);
 
 	}
 
-
-		
-
 	// 書籍の貸出
 	public void rentBook(int bookId) {
-		String sql = "insert into rentbooks (book_id) select " + bookId + " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
+		String sql = "insert into rentbooks (book_id) select " + bookId
+				+ " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 	}
-		
-		public int count() {
-        String sql = "select count (*) from rentbooks";
-		
-		return jdbcTemplate.queryForObject(sql, int.class);
-	
-		}
-		// 書籍の返却
-		public void returnBook(int bookId) {
-			String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
-			jdbcTemplate.update(sql);
-		
-		}
-		public int size(int bookId) {
-	        String sql = "select count (*) from rentbooks WHERE book_id=" + bookId;
-	        return jdbcTemplate.queryForObject(sql, int.class);
-		}
-		
-		
-		
-}
 
-	
+	public int count() {
+		String sql = "select count (*) from rentbooks";
+
+		return jdbcTemplate.queryForObject(sql, int.class);
+
+	}
+
+	// 書籍の返却
+	public void returnBook(int bookId) {
+		String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
+		jdbcTemplate.update(sql);
+
+	}
+
+	public int size(int bookId) {
+		String sql = "select count (*) from rentbooks WHERE book_id=" + bookId;
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+
+	/**
+	 * 書籍の検索
+	 * 
+	 * @param title 書籍名
+	 * @return 書籍リスト
+	 * 
+	 */
+	public List<BookInfo> searchbook(String title) {
+
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT id, title, author, publisher, publish_date, thumbnail_name, thumbnail_url FROM books WHERE title like '%"
+						+ title + "%' ORDER BY title ",
+				new BookInfoRowMapper());
+
+		return getedBookList;
+
+	}
+
+}
