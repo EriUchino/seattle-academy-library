@@ -51,9 +51,7 @@ public class BooksService {
 
 		String sql = "SELECT * FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
 				+ bookId;
-		System.out.println(sql);
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-		System.out.println(bookDetailsInfo);
 		return bookDetailsInfo;
 	}
 
@@ -210,23 +208,4 @@ public class BooksService {
 		return jdbcTemplate.queryForObject(sql, int.class);
 
 	}
-
-	/**
-	 * 書籍の検索
-	 * 
-	 * @param title 書籍名
-	 * @return 書籍リスト
-	 * 
-	 */
-	public List<BookInfo> searchbook(String title) {
-
-		List<BookInfo> getedBookList = jdbcTemplate.query(
-				"SELECT id, title, author, publisher, publish_date, thumbnail_name, thumbnail_url FROM books WHERE title like '%"
-						+ title + "%' ORDER BY title ",
-				new BookInfoRowMapper());
-
-		return getedBookList;
-
-	}
-
 }
