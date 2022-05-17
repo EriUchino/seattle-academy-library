@@ -97,8 +97,18 @@ input {
     box-shadow: 0 0 2px black;
 }
 
-.search_btn {
-   
+.search_btn  {
+	display: inline-block;
+	border-radius: 5%; 
+	font-size: 10pt; 
+	text-align: center; 
+	cursor: pointer; 
+	padding: 12px 12px; 
+	background: #2196f3; 
+	color: #ffffff; 
+	line-height: 1em; 
+	box-shadow: 0 0 2px black;
+	height: 35px;
 }
 
 .booklist {
