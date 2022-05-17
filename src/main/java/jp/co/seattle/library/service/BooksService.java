@@ -48,10 +48,10 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 
 		// JSPに渡すデータを設定する
-		String sql = "SELECT * FROM books where id =" + bookId;
 
+		String sql = "SELECT * FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
+				+ bookId;
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-
 		return bookDetailsInfo;
 	}
 
@@ -156,13 +156,14 @@ public class BooksService {
 
 	}
 
-	
 	/**
 	 * 書籍の貸し出し
 	 * 
 	 * 
-	 * @param bookId　書籍ID 
+	 * @param bookId 書籍ID
 	 */
+
+	// 書籍の貸出
 
 	public void rentBook(int bookId) {
 		String sql = "insert into rentbooks (book_id) select " + bookId
@@ -174,8 +175,9 @@ public class BooksService {
 	 * 
 	 * 
 	 * @param
-	 * @return bookId　書籍ID
+	 * @return bookId 書籍ID
 	 */
+
 	public int count() {
 		String sql = "select count (*) from rentbooks";
 
@@ -183,12 +185,11 @@ public class BooksService {
 
 	}
 
-	
 	/**
 	 * 書籍を返却する
 	 * 
 	 * 
-	 * @param bookId　書籍ID 
+	 * @param bookId 書籍ID
 	 */
 	public void returnBook(int bookId) {
 		String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
@@ -199,12 +200,12 @@ public class BooksService {
 	/**
 	 * 
 	 * 
-	 * @param bookId　書籍ID
+	 * @param bookId 書籍ID
 	 * @return 書籍情報
 	 */
 	public int size(int bookId) {
 		String sql = "select count (*) from rentbooks WHERE book_id=" + bookId;
 		return jdbcTemplate.queryForObject(sql, int.class);
-	}
 
+	}
 }
