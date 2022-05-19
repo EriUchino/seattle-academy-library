@@ -48,8 +48,8 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 		System.out.println(bookId);
 		// JSPに渡すデータを設定する
-
-		String sql = "SELECT *, CASE WHEN book_id is null THEN '貸出し可' ELSE '貸出し中' END as status FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = " + bookId;
+		String sql = "SELECT *, CASE WHEN book_id is null THEN '貸出し可' ELSE '貸出し中' END as status FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
+				+ bookId;
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 		return bookDetailsInfo;
 	}
@@ -162,8 +162,6 @@ public class BooksService {
 	 * @param bookId 書籍ID
 	 */
 
-	// 書籍の貸出
-
 	public void rentBook(int bookId) {
 		String sql = "insert into rentbooks (book_id) select " + bookId
 				+ " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
@@ -197,6 +195,24 @@ public class BooksService {
 	}
 
 	/**
+	 * 書籍の検索
+	 * 
+	 * @param title 書籍名
+	 * @return 書籍リスト
+	 * 
+	 */
+	public List<BookInfo> searchbook(String title) {
+
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT id, title, author, publisher, publish_date, thumbnail_name, thumbnail_url FROM books WHERE title like '%"
+						+ title + "%' ORDER BY title ",
+				new BookInfoRowMapper());
+
+		return getedBookList;
+
+	}
+
+	/**
 	 * 
 	 * 
 	 * @param bookId 書籍ID
@@ -207,7 +223,5 @@ public class BooksService {
 		return jdbcTemplate.queryForObject(sql, int.class);
 
 	}
-	
-	
 
 }
