@@ -46,11 +46,10 @@ public class BooksService {
 	 * @return 書籍情報
 	 */
 	public BookDetailsInfo getBookInfo(int bookId) {
-
+		System.out.println(bookId);
 		// JSPに渡すデータを設定する
 
-		String sql = "SELECT * FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
-				+ bookId;
+		String sql = "SELECT *, CASE WHEN book_id is null THEN '貸出し可' ELSE '貸出し中' END as status FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = " + bookId;
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 		return bookDetailsInfo;
 	}
@@ -208,4 +207,7 @@ public class BooksService {
 		return jdbcTemplate.queryForObject(sql, int.class);
 
 	}
+	
+	
+
 }

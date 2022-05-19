@@ -42,13 +42,12 @@
                         </c:if> <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
                     </a>
                 </div>
-                 <c:if test="${!empty rentErrorMessage}">
-                <div class="error">
-                    <c:forEach var="error" items="${rentErrorMessage}">
-                        <p>${error}</p>
-                    </c:forEach>
-                </div>
-            </c:if>
+               
+                <p>${bookDetailsInfo.status}</p>
+                
+                <c:if test="${!empty ErrorMessage}">
+                    <div class="error">${ErrorMessage}</div>
+                </c:if>
             </div>
             <div class="content_right">
                 <div>
