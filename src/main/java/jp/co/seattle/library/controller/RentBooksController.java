@@ -32,11 +32,11 @@ public class RentBooksController {
 	@RequestMapping(value = "/rentBook", method = RequestMethod.POST) // value＝actionで指定したパラメータ
 	public String rentBook (Locale locale, @RequestParam("bookId") Integer bookId, Model model) {
 		
-		int count1 = booksService.count();
+		int count = booksService.count();
 		booksService.rentBook(bookId);
-		int count2 = booksService.count();
+		int size = booksService.count();
 		
-		if (count1 == count2) {
+		if (count == size) {
 			model.addAttribute("rentErrorMessage", "貸出し済みです。");
 			
 		}

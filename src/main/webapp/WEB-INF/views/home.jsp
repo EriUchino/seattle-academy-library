@@ -27,8 +27,7 @@
     <main>
         <h1>Home</h1>
         <div class="search">
-            <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> 
-            <a href="<%=request.getContextPath()%>/bulkRegist" class="btn_bulk_book">一括登録</a>
+            <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/bulkRegist" class="btn_bulk_book">一括登録</a>
             <div class="search2">
                 <form method="post" action="<%=request.getContextPath()%>/searchbook">
                     <div class="search3">
