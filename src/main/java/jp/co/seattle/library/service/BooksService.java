@@ -163,8 +163,7 @@ public class BooksService {
 	 */
 
 	public void rentBook(int bookId) {
-		String sql = "insert into rentbooks (book_id) select " + bookId
-				+ " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
+		String sql = "insert into rentbooks (book_id) select " + bookId + " , now() where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 	}
 
@@ -189,7 +188,8 @@ public class BooksService {
 	 * @param bookId 書籍ID
 	 */
 	public void returnBook(int bookId) {
-		String sql = "DELETE FROM rentbooks WHERE book_id=" + bookId;
+		
+		String sql = "update rentbooks set return_date = null, lending_date = now() where rentbooks.book_id =  and lending_date is null";
 		jdbcTemplate.update(sql);
 
 	}
@@ -219,9 +219,25 @@ public class BooksService {
 	 * @return 書籍情報
 	 */
 	public int size(int bookId) {
-		String sql = "select count (*) from rentbooks WHERE book_id=" + bookId;
+		String sql = "select count (lending_date) from rentbooks WHERE book_id=" + bookId;
 		return jdbcTemplate.queryForObject(sql, int.class);
 
 	}
+	/**
+	 * 書籍IDに紐づく書籍貸出を取得する
+	 *
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	public BookDetailsInfo rentHistory(int bookId) {
 
+		// JSPに渡すデータを設定する
+
+		String sql = "select title, lending_date, return_date from books inner join rentbooks ON books.id = rentbooks.book_id where books.id = "
+				+ bookId;
+		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+		return bookDetailsInfo;
+	}
+	
+	
 }
