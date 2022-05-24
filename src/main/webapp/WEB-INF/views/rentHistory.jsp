@@ -13,7 +13,7 @@
 <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="resources/css/lightbox.css">
-<link rel=“stylesheet” href=“https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css” integrity=“sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO” crossorigin=“anonymous”>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="resources/js/lightbox.js" /></script>
 </head>
@@ -31,16 +31,33 @@
         </div>
     </header>
     <main>
+        <h3>貸出履歴一覧</h3>
         <div>
             <table class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th class="header">書籍名</th>
-                        <th class="header" id=lending_date>貸出日</th>
-                        <th class="header" id=return_date>返却日</th>
+                    <tr class="table-primary">
+                        <th>書籍名</th>
+                        <th>貸出日</th>
+                        <th>返却日</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    <c:forEach var="rentHistoryInfo" items="${bookList}">
+                        <tr>
+                            <%-- <a href="javascript:void(0)" onclick="this.parentNode.submit();"> </a>
+                            <input type="hidden" name="bookId" value="${rentHistoryInfo.bookId}"> --%>
+                            
+                            <td>
+                            <form method="post" class="book_title" action="<%=request.getContextPath()%>/details">
+                            <a href="javascript:void(0)" onclick="this.parentNode.submit();">${rentHistoryInfo.title}</a>
+                            <input type="hidden" name="bookId" value="${rentHistoryInfo.id}"> </form> 
+                            </td>
+                            
+                            <td>${rentHistoryInfo.lendingDate}</td>
+                            <td>${rentHistoryInfo.returnDate}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
             </table>
         </div>
     </main>

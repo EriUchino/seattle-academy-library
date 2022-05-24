@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.rentHistoryInfo;
 import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
+import jp.co.seattle.library.rowMapper.rentHistoryRowMapper;
 
 /**
  * 書籍サービス
@@ -33,7 +35,7 @@ public class BooksService {
 
 		// TODO 取得したい情報を取得するようにSQLを修正
 		List<BookInfo> getedBookList = jdbcTemplate.query(
-				"SELECT id, title, author, publisher, publish_date, thumbnail_name, thumbnail_url FROM books ORDER BY title asc",
+				"SELECT id, title, author, publisher, publish_date, thumbnail_name, thumbnail_url FROM books ORDER BY title ASC",
 				new BookInfoRowMapper());
 
 		return getedBookList;
@@ -48,7 +50,7 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 		System.out.println(bookId);
 		// JSPに渡すデータを設定する
-		String sql = "SELECT *, CASE WHEN book_id is null THEN '貸出し可' ELSE '貸出し中' END as status FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
+		String sql = "SELECT *, CASE WHEN lending_date is null THEN '貸出し可' ELSE '貸出し中' END as status FROM books LEFT OUTER JOIN rentbooks ON books.id = rentbooks.book_id WHERE books.id = "
 				+ bookId;
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 		return bookDetailsInfo;
@@ -163,21 +165,11 @@ public class BooksService {
 	 */
 
 	public void rentBook(int bookId) {
-		String sql = "insert into rentbooks (book_id) select " + bookId + " , now() where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
+		// task15
+		
+		String sql ="insert into rentbooks (book_id, lending_date, return_date) values (" + bookId + "," + " now()," + " now()) "
+				+ "on conflict (book_id) do update set lending_date = "+"now()"+", return_date =null";
 		jdbcTemplate.update(sql);
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param
-	 * @return bookId 書籍ID
-	 */
-
-	public int count() {
-		String sql = "select count (*) from rentbooks";
-
-		return jdbcTemplate.queryForObject(sql, int.class);
 
 	}
 
@@ -188,10 +180,37 @@ public class BooksService {
 	 * @param bookId 書籍ID
 	 */
 	public void returnBook(int bookId) {
-		
-		String sql = "update rentbooks set return_date = null, lending_date = now() where rentbooks.book_id =  and lending_date is null";
+		// task15
+		String sql = "update rentbooks set lending_date = null, return_date = now() "
+				+ "where rentbooks.book_id = "+bookId+" and return_date is null";
 		jdbcTemplate.update(sql);
 
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param
+	 * @return bookId 書籍ID
+	 */
+
+	public int count() {
+		String sql = "select count (lending_date) from rentbooks";
+
+		return jdbcTemplate.queryForObject(sql, int.class);
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	public int size(int bookId) {
+		// task15
+		String sql = "select count (lending_date) from rentbooks WHERE book_id=" + bookId + "";
+		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 
 	/**
@@ -213,31 +232,17 @@ public class BooksService {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param bookId 書籍ID
-	 * @return 書籍情報
-	 */
-	public int size(int bookId) {
-		String sql = "select count (lending_date) from rentbooks WHERE book_id=" + bookId;
-		return jdbcTemplate.queryForObject(sql, int.class);
-
-	}
-	/**
-	 * 書籍IDに紐づく書籍貸出を取得する
+	 * 書籍IDに紐づく書籍貸出日と返却日を取得する
 	 *
 	 * @param bookId 書籍ID
 	 * @return 書籍情報
 	 */
-	public BookDetailsInfo rentHistory(int bookId) {
-
+	public List<rentHistoryInfo> rentHistory() {
 		// JSPに渡すデータを設定する
-
-		String sql = "select title, lending_date, return_date from books inner join rentbooks ON books.id = rentbooks.book_id where books.id = "
-				+ bookId;
-		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-		return bookDetailsInfo;
+		List<rentHistoryInfo> getedHistoryList = jdbcTemplate.query(
+				"select books.id, title, lending_date, return_date from books inner join rentbooks ON books.id = rentbooks.book_id",
+				new rentHistoryRowMapper());
+		return getedHistoryList;
 	}
-	
-	
+
 }

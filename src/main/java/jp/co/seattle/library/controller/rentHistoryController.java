@@ -1,5 +1,7 @@
 package jp.co.seattle.library.controller;
 
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,8 @@ public class rentHistoryController {
 	
 	@RequestMapping(value = "/rentHistory", method = RequestMethod.GET) // value＝actionで指定したパラメータ
 	// RequestParamでname属性を取得
-	public String rentHistory(Model model) {
+	public String rentHistory(Locale locale, Model model) {
+		model.addAttribute("bookList", booksService.rentHistory());
 		return "rentHistory";
 	}
 }
