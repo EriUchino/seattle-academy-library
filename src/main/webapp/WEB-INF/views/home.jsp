@@ -10,6 +10,7 @@
 <link href="<c:url value="/resources/css/default.css" />" rel="stylesheet" type="text/css">
 <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
 </head>
 <body class="wrapper">
     <header>
@@ -27,7 +28,9 @@
     <main>
         <h1>Home</h1>
         <div class="search">
-            <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/bulkRegist" class="btn_bulk_book">一括登録</a>
+            <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> 
+            <a href="<%=request.getContextPath()%>/bulkRegist" class="btn_bulk_book">一括登録</a> 
+            <a href="<%=request.getContextPath()%>/rentHistory" class="btn_rent_history">貸出履歴一覧</a>
             <div class="search2">
                 <form method="post" action="<%=request.getContextPath()%>/searchbook">
                     <div class="search3">
@@ -48,7 +51,8 @@
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
                             <form method="post" class="book_thumnail" action="<%=request.getContextPath()%>/details">
-                                <a href="javascript:void(0)" onclick="this.parentNode.submit();"> <c:if test="${bookInfo.thumbnail == 'null'}">
+                                <a href="javascript:void(0)" onclick="this.parentNode.submit();"> 
+                                <c:if test="${bookInfo.thumbnail == 'null'}">
                                         <img class="book_noimg" src="resources/img/noImg.png">
                                     </c:if> <c:if test="${bookInfo.thumbnail != 'null'}">
                                         <img class="book_noimg" src="${bookInfo.thumbnail}">

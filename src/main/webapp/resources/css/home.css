@@ -158,7 +158,7 @@ img.book_noimg, img.book_img{
     font-size: 12px;
 }
 
-a.btn_add_book,a.btn_bulk_book, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist {
+a.btn_add_book,a.btn_bulk_book,a.btn_rent_history, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist,button.btn_rentHistory {
     display: inline-block;
     font-size: 16px;
     font-weight: bold;
@@ -175,6 +175,9 @@ a.btn_add_book,a.btn_bulk_book, button.btn_addBook,button.btn_editBook, button.b
 a.btn_bulk_book{
 	background-color: #66cdaa;
 }
+a.btn_rent_history{
+	background-color: #FF9933;
+}
 button.btn_editBook{
     background-color: #9ec34b;
 }
@@ -189,6 +192,9 @@ button.btn_returnBook {
 }
 button.btn_bulkRegist {
 	background-color: #FF9966;
+}
+button.btn_rentHistory{
+    background-color: #FF9933;
 }
 
 a:hover, button:hover {
@@ -238,17 +244,17 @@ a:hover, button:hover {
 }
 
 
-button.btn_addBook, button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist {
+button.btn_addBook, button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist,button.btn_rentHistory {
     border-radius: 30px;
     width: 120px;
     margin-top: 20px;
     border: none;
     border-bottom: solid 2px rgba(0, 0, 0, .2);
 }
-button.btn_addBook:focus, button.btn_editBook:focus, button.btn_deleteBook:focus,button.btn_rentBook:focus,button.btn_returnBook:focus,button.btn_bulkRegist:focus {
+button.btn_addBook:focus, button.btn_editBook:focus, button.btn_deleteBook:focus,button.btn_rentBook:focus,button.btn_returnBook:focus,button.btn_bulkRegist:focus,button.btn_rentHistory:focus {
     outline: none;
 }
-button.btn_addBook:hover, button.btn_editBook:hover, button.btn_deleteBook:hover,button.btn_rentBook:hover,button.btn_returnBook:hover,button.btn_bulkRegist:hover {
+button.btn_addBook:hover, button.btn_editBook:hover, button.btn_deleteBook:hover,button.btn_rentBook:hover,button.btn_returnBook:hover,button.btn_bulkRegist:hover,button.btn_rentHistory:hover {
     cursor: pointer;
 }
 
